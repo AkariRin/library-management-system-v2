@@ -13,7 +13,7 @@
         管理书籍
       </v-tab>
       <v-tab value="copies">
-        <v-icon start icon="mdi-book-copy"></v-icon>
+        <v-icon start icon="mdi-content-duplicate"></v-icon>
         管理副本
       </v-tab>
       <v-tab value="records">

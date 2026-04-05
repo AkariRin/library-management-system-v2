@@ -3,8 +3,9 @@ import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import axios from 'axios'
 
-import 'vuetify/styles'
+import 'vuetify/styles/main.sass'
 import { createVuetify } from 'vuetify'
+import { zhHans } from 'vuetify/locale'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
@@ -14,7 +15,7 @@ import App from './App.vue'
 import router from './router'
 import { useUserdataStore } from '@/stores/userdata'
 
-// Configure axios to send cookies with requests
+// 让axios携带cookie进行跨域请求，以支持后端的会话管理和认证机制
 axios.defaults.withCredentials = true
 
 createApp(App)
@@ -23,6 +24,12 @@ createApp(App)
   .use(createVuetify({
   components,
   directives,
+  locale: {
+    locale: 'zhHans',
+    messages: {
+      zhHans,
+    },
+  },
 }))
   .mount('#app')
 
