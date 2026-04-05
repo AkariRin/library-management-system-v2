@@ -12,13 +12,13 @@ import adminView from '@/views/adminView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/', name: 'Home', component: homeView},
-    { path: '/login', name: 'login', component: loginView, meta: { isPublic: true } },
-    { path: '/register', name: 'register', component: registerView, meta: { isPublic: true } },
-    { path: '/books', name: 'Books', component: booksView},
-    { path: '/borrow', name: 'Borrow Records', component: borrowView},
-    { path: '/admin', name: 'Admin', component: adminView, meta: { requireAdmin: true }},
-    { path: '/settings', name: 'Settings', component: settingsView},
+    { path: '/', name: '首页', component: homeView},
+    { path: '/login', name: '登录', component: loginView, meta: { isPublic: true } },
+    { path: '/register', name: '注册', component: registerView, meta: { isPublic: true } },
+    { path: '/books', name: '书籍', component: booksView},
+    { path: '/borrow', name: '借阅记录', component: borrowView},
+    { path: '/admin', name: '管理面板', component: adminView, meta: { requireAdmin: true }},
+    { path: '/settings', name: '设置', component: settingsView},
   ],
 })
 
@@ -58,7 +58,7 @@ router.beforeEach((to, from, next) => {
 
 // 全局后置路由守卫，设置页面标题
 router.afterEach((to) => {
-  document.title = `${String(to.name)} | Library Management System`
+  document.title = `${String(to.name)} | 图书管理系统`
 })
 
 export default router

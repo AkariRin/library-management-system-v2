@@ -1,7 +1,7 @@
 <template>
   <v-card-title class="text-h4 mb-6 text-grey-darken-3">
     <v-icon icon="mdi-shield-account" class="mr-8"></v-icon>
-    管理享板
+    管理面板
   </v-card-title>
   <v-divider></v-divider>
 

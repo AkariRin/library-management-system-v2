@@ -31,7 +31,7 @@
         icon="mdi-logout"
         variant="text"
         @click="logout"
-        title="Logout"
+        title="登出"
       ></v-btn>
     </v-app-bar>
     <v-main class="glass-effect">
@@ -49,10 +49,10 @@
     <v-dialog v-model="logoutDialog" max-width="400">
       <v-card>
         <v-card-title class="text-h5">
-          Confirm logout
+          确认登出
         </v-card-title>
         <v-card-text>
-          Are you sure you want to log out?
+          确定要登出吗？
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -61,14 +61,14 @@
             variant="text"
             @click="cancelLogout"
           >
-            Cancel
+            取消
           </v-btn>
           <v-btn
             color="primary"
             variant="text"
             @click="confirmLogout"
           >
-            Confirm
+            确认
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -85,7 +85,7 @@
           variant="text"
           @click="snackbar = false"
         >
-          Close
+          关闭
         </v-btn>
       </template>
     </v-snackbar>
@@ -128,7 +128,7 @@ const confirmLogout = async () => {
     await axios.post('/api/auth/logout')
     user.logout()
     logoutDialog.value = false
-    snackbarText.value = 'Successfully logged out'
+    snackbarText.value = '已成功登出'
     snackbar.value = true
     setTimeout(() => {
       router.push({ name: 'login' })

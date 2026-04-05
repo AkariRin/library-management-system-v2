@@ -144,7 +144,7 @@
           variant="text"
           @click="snackbar = false"
         >
-          关闽
+          关闭
         </v-btn>
       </template>
     </v-snackbar>

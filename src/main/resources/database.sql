@@ -5,7 +5,7 @@ create table
             name varchar(12) not null,
             password varchar(60) not null,
             admin boolean not null default false
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- 图书信息表（存储图书品种信息）
 CREATE TABLE `books` (
