@@ -1,0 +1,83 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.7'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.github.node-gradle.node' version '7.1.0'
+}
+
+group = 'dev.rbq'
+version = '0.0.0'
+description = 'Library Management System'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.session:spring-session-data-redis'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'io.lettuce:lettuce-core'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    enabled = false  // 禁用测试
+}
+
+// Node.js configuration
+node {
+    version = '22.12.0'
+    pnpmVersion = '9.15.0'
+    download = true
+    workDir = file("${layout.buildDirectory.get().asFile}/nodejs")
+    pnpmWorkDir = file("${layout.buildDirectory.get().asFile}/pnpm")
+    nodeProjectDir = file("${project.projectDir}/frontend")
+}
+
+// Task to build frontend
+tasks.register('buildFrontend', com.github.gradle.node.pnpm.task.PnpmTask) {
+    args = ['run', 'build']
+    dependsOn tasks.pnpmInstall
+    inputs.dir('frontend').withPathSensitivity(PathSensitivity.RELATIVE)
+    outputs.dir('frontend/dist')
+}
+
+// Task to copy frontend build to resources
+tasks.register('copyFrontend', Copy) {
+    dependsOn buildFrontend
+    from 'frontend/dist'
+    into "${layout.buildDirectory.get().asFile}/resources/main/static"
+}
+
+// Make processResources depend on copyFrontend
+tasks.named('processResources') {
+    dependsOn copyFrontend
+}
+
+// Clean frontend build
+tasks.named('clean') {
+    delete 'frontend/dist'
+    delete 'frontend/node_modules'
+}
