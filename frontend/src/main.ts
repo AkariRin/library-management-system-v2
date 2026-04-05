@@ -3,7 +3,7 @@ import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import axios from 'axios'
 
-import 'vuetify/styles/main.sass'
+import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import { zhHans } from 'vuetify/locale'
 import * as components from 'vuetify/components'
