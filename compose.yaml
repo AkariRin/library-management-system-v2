@@ -17,7 +17,7 @@ services:
       REDIS_PORT: "6379"
       REDIS_PASSWORD: ""
   mysql:
-    image: mysql:latest
+    image: mysql:8.0
     restart: always
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:

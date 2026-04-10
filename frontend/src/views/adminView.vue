@@ -197,11 +197,11 @@
               {{ item.statusDescription }}
             </v-chip>
           </template>
-          <template v-slot:[`item.actions`]="{ item }">
-            <v-btn color="info" variant="text" size="small" @click="openEditRecordDialog(item)">
-              Edit
-            </v-btn>
-          </template>
+           <template v-slot:[`item.actions`]="{ item }">
+             <v-btn color="info" variant="text" size="small" @click="openEditRecordDialog(item)">
+               编辑
+             </v-btn>
+           </template>
           <template #bottom>
             <div class="text-center pa-4">
               <v-pagination
@@ -215,311 +215,311 @@
         </v-data-table>
       </v-window-item>
 
-      <!-- 用户管理标签页 -->
-      <v-window-item value="users">
-        <div class="mb-4">
-          <v-btn color="primary" variant="elevated" prepend-icon="mdi-refresh" @click="loadUsers" :loading="loadingUsers">
-            Refresh
-          </v-btn>
-        </div>
+       <!-- 用户管理标签页 -->
+       <v-window-item value="users">
+         <div class="mb-4">
+           <v-btn color="primary" variant="elevated" prepend-icon="mdi-refresh" @click="loadUsers" :loading="loadingUsers">
+             刷新
+           </v-btn>
+         </div>
 
-        <v-data-table
-          :headers="userHeaders"
-          :items="users"
-          :loading="loadingUsers"
-          items-per-page="15"
-          class="elevation-2"
-        >
-          <template v-slot:[`item.user`]="{ item }">
-            <div>
-              <div class="font-weight-bold">{{ item.name }}</div>
-              <div class="text-caption text-grey-darken-1">@{{ item.username }}</div>
-            </div>
-          </template>
-          <template v-slot:[`item.uuid`]="{ item }">
-            <span class="text-caption text-grey">{{ item.uuid }}</span>
-          </template>
-          <template v-slot:[`item.admin`]="{ item }">
-            <v-chip :color="item.admin ? 'primary' : 'grey'" size="small" variant="flat">
-              {{ item.admin ? 'Admin' : 'User' }}
-            </v-chip>
-          </template>
-          <template v-slot:[`item.actions`]="{ item }">
-            <v-btn
-              v-if="!item.isCurrentUser"
-              :color="item.admin ? 'warning' : 'success'"
-              variant="text"
-              size="small"
-              @click="toggleAdminStatus(item)"
-              class="mr-1"
-            >
-              {{ item.admin ? 'Remove Admin' : 'Make Admin' }}
-            </v-btn>
-            <v-btn
-              v-if="!item.isCurrentUser"
-              color="error"
-              variant="text"
-              size="small"
-              @click="openDeleteUserDialog(item)"
-            >
-              Delete
-            </v-btn>
-            <v-chip v-else color="info" size="small" variant="tonal">You</v-chip>
-          </template>
-        </v-data-table>
-      </v-window-item>
+         <v-data-table
+           :headers="userHeaders"
+           :items="users"
+           :loading="loadingUsers"
+           items-per-page="15"
+           class="elevation-2"
+         >
+           <template v-slot:[`item.user`]="{ item }">
+             <div>
+               <div class="font-weight-bold">{{ item.name }}</div>
+               <div class="text-caption text-grey-darken-1">@{{ item.username }}</div>
+             </div>
+           </template>
+           <template v-slot:[`item.uuid`]="{ item }">
+             <span class="text-caption text-grey">{{ item.uuid }}</span>
+           </template>
+           <template v-slot:[`item.admin`]="{ item }">
+             <v-chip :color="item.admin ? 'primary' : 'grey'" size="small" variant="flat">
+               {{ item.admin ? '管理员' : '用户' }}
+             </v-chip>
+           </template>
+           <template v-slot:[`item.actions`]="{ item }">
+             <v-btn
+               v-if="!item.isCurrentUser"
+               :color="item.admin ? 'warning' : 'success'"
+               variant="text"
+               size="small"
+               @click="toggleAdminStatus(item)"
+               class="mr-1"
+             >
+               {{ item.admin ? '撤销管理员' : '设为管理员' }}
+             </v-btn>
+             <v-btn
+               v-if="!item.isCurrentUser"
+               color="error"
+               variant="text"
+               size="small"
+               @click="openDeleteUserDialog(item)"
+             >
+               删除
+             </v-btn>
+             <v-chip v-else color="info" size="small" variant="tonal">您</v-chip>
+           </template>
+         </v-data-table>
+       </v-window-item>
     </v-window>
   </v-card-text>
 
-  <!-- 删除用户确认对话框 -->
-  <v-dialog v-model="deleteUserDialog" max-width="400px">
-    <v-card>
-      <v-card-title class="text-h5">Confirm Delete</v-card-title>
-      <v-card-text>
-        Are you sure you want to delete this user? This action cannot be undone.
-        <div class="mt-4" v-if="userToDelete">
-          <div class="font-weight-bold">{{ userToDelete.name }}</div>
-          <div class="text-caption">@{{ userToDelete.username }}</div>
-        </div>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="grey" variant="text" @click="deleteUserDialog = false" :disabled="deletingUser">Cancel</v-btn>
-        <v-btn color="error" variant="elevated" @click="deleteUser" :loading="deletingUser">Delete</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+   <!-- 删除用户确认对话框 -->
+   <v-dialog v-model="deleteUserDialog" max-width="400px">
+     <v-card>
+       <v-card-title class="text-h5">确认删除</v-card-title>
+       <v-card-text>
+         确定要删除此用户吗？此操作无法撤销。
+         <div class="mt-4" v-if="userToDelete">
+           <div class="font-weight-bold">{{ userToDelete.name }}</div>
+           <div class="text-caption">@{{ userToDelete.username }}</div>
+         </div>
+       </v-card-text>
+       <v-card-actions>
+         <v-spacer></v-spacer>
+         <v-btn color="grey" variant="text" @click="deleteUserDialog = false" :disabled="deletingUser">取消</v-btn>
+         <v-btn color="error" variant="elevated" @click="deleteUser" :loading="deletingUser">删除</v-btn>
+       </v-card-actions>
+     </v-card>
+   </v-dialog>
 
-  <!-- 添加/编辑图书对话框 -->
-  <v-dialog v-model="bookDialog" max-width="600px">
-    <v-card>
-      <v-card-title class="text-h5">
-        {{ editingBook ? 'Edit Book' : 'Add New Book' }}
-      </v-card-title>
-      <v-card-text>
-        <v-form ref="bookFormRef">
-          <v-text-field
-            v-model="bookForm.title"
-            label="Title *"
-            variant="underlined"
-            :rules="titleRules"
-            :disabled="savingBook"
-            class="mb-2"
-          ></v-text-field>
-          <v-text-field
-            v-model="bookForm.author"
-            label="Author *"
-            variant="underlined"
-            :rules="authorRules"
-            :disabled="savingBook"
-            class="mb-2"
-          ></v-text-field>
-          <v-text-field
-            v-model="bookForm.isbn"
-            label="ISBN"
-            variant="underlined"
-            :disabled="savingBook"
-            class="mb-2"
-          ></v-text-field>
-          <v-text-field
-            v-model="bookForm.publisher"
-            label="Publisher"
-            variant="underlined"
-            :disabled="savingBook"
-            class="mb-2"
-          ></v-text-field>
-          <v-text-field
-            v-model="bookForm.publishDate"
-            label="Publish Date"
-            variant="underlined"
-            type="date"
-            :disabled="savingBook"
-            class="mb-2"
-          ></v-text-field>
-          <v-text-field
-            v-model="bookForm.category"
-            label="Category ID"
-            variant="underlined"
-            type="number"
-            :disabled="savingBook"
-            class="mb-2"
-          ></v-text-field>
-          <v-text-field
-            v-model="bookForm.price"
-            label="Price"
-            variant="underlined"
-            type="number"
-            step="0.01"
-            :disabled="savingBook"
-            class="mb-2"
-          ></v-text-field>
-          <v-textarea
-            v-model="bookForm.summary"
-            label="Summary"
-            variant="underlined"
-            rows="3"
-            :disabled="savingBook"
-          ></v-textarea>
-        </v-form>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="grey" variant="text" @click="closeBookDialog" :disabled="savingBook">Cancel</v-btn>
-        <v-btn color="primary" variant="elevated" @click="saveBook" :loading="savingBook">Save</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+   <!-- 添加/编辑图书对话框 -->
+   <v-dialog v-model="bookDialog" max-width="600px">
+     <v-card>
+       <v-card-title class="text-h5">
+         {{ editingBook ? '编辑书籍' : '添加新书籍' }}
+       </v-card-title>
+       <v-card-text>
+         <v-form ref="bookFormRef">
+           <v-text-field
+             v-model="bookForm.title"
+             label="书名 *"
+             variant="underlined"
+             :rules="titleRules"
+             :disabled="savingBook"
+             class="mb-2"
+           ></v-text-field>
+           <v-text-field
+             v-model="bookForm.author"
+             label="作者 *"
+             variant="underlined"
+             :rules="authorRules"
+             :disabled="savingBook"
+             class="mb-2"
+           ></v-text-field>
+           <v-text-field
+             v-model="bookForm.isbn"
+             label="ISBN"
+             variant="underlined"
+             :disabled="savingBook"
+             class="mb-2"
+           ></v-text-field>
+           <v-text-field
+             v-model="bookForm.publisher"
+             label="出版社"
+             variant="underlined"
+             :disabled="savingBook"
+             class="mb-2"
+           ></v-text-field>
+           <v-text-field
+             v-model="bookForm.publishDate"
+             label="出版日期"
+             variant="underlined"
+             type="date"
+             :disabled="savingBook"
+             class="mb-2"
+           ></v-text-field>
+           <v-text-field
+             v-model="bookForm.category"
+             label="分类ID"
+             variant="underlined"
+             type="number"
+             :disabled="savingBook"
+             class="mb-2"
+           ></v-text-field>
+           <v-text-field
+             v-model="bookForm.price"
+             label="价格"
+             variant="underlined"
+             type="number"
+             step="0.01"
+             :disabled="savingBook"
+             class="mb-2"
+           ></v-text-field>
+           <v-textarea
+             v-model="bookForm.summary"
+             label="摘要"
+             variant="underlined"
+             rows="3"
+             :disabled="savingBook"
+           ></v-textarea>
+         </v-form>
+       </v-card-text>
+       <v-card-actions>
+         <v-spacer></v-spacer>
+         <v-btn color="grey" variant="text" @click="closeBookDialog" :disabled="savingBook">取消</v-btn>
+         <v-btn color="primary" variant="elevated" @click="saveBook" :loading="savingBook">保存</v-btn>
+       </v-card-actions>
+     </v-card>
+   </v-dialog>
 
-  <!-- 删除图书确认对话框 -->
-  <v-dialog v-model="deleteBookDialog" max-width="400px">
-    <v-card>
-      <v-card-title class="text-h5">Confirm Delete</v-card-title>
-      <v-card-text>
-        Are you sure you want to delete this book? This will also delete all copies.
-        <div class="mt-4 font-weight-bold" v-if="bookToDelete">
-          {{ bookToDelete.title }}
-        </div>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="grey" variant="text" @click="deleteBookDialog = false" :disabled="deletingBook">Cancel</v-btn>
-        <v-btn color="error" variant="elevated" @click="deleteBook" :loading="deletingBook">Delete</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+   <!-- 删除图书确认对话框 -->
+   <v-dialog v-model="deleteBookDialog" max-width="400px">
+     <v-card>
+       <v-card-title class="text-h5">确认删除</v-card-title>
+       <v-card-text>
+         确定要删除此书籍吗？这也会删除所有副本。
+         <div class="mt-4 font-weight-bold" v-if="bookToDelete">
+           {{ bookToDelete.title }}
+         </div>
+       </v-card-text>
+       <v-card-actions>
+         <v-spacer></v-spacer>
+         <v-btn color="grey" variant="text" @click="deleteBookDialog = false" :disabled="deletingBook">取消</v-btn>
+         <v-btn color="error" variant="elevated" @click="deleteBook" :loading="deletingBook">删除</v-btn>
+       </v-card-actions>
+     </v-card>
+   </v-dialog>
 
-  <!-- 添加/编辑副本对话框 -->
-  <v-dialog v-model="copyDialog" max-width="600px">
-    <v-card>
-      <v-card-title class="text-h5">
-        {{ editingCopy ? 'Edit Copy' : 'Add New Copy' }}
-      </v-card-title>
-      <v-card-text>
-        <v-form ref="copyFormRef">
-          <v-text-field
-            v-model="copyForm.barcode"
-            label="Barcode *"
-            variant="underlined"
-            :rules="barcodeRules"
-            :disabled="savingCopy"
-            class="mb-2"
-          ></v-text-field>
-          <v-text-field
-            v-model="copyForm.location"
-            label="Location"
-            variant="underlined"
-            :disabled="savingCopy"
-            class="mb-2"
-          ></v-text-field>
-          <v-select
-            v-model="copyForm.status"
-            label="Status *"
-            variant="underlined"
-            :items="copyStatusOptions"
-            :rules="statusRules"
-            :disabled="savingCopy"
-            class="mb-2"
-          ></v-select>
-          <v-text-field
-            v-model="copyForm.acquisitionDate"
-            label="Acquisition Date"
-            variant="underlined"
-            type="date"
-            :disabled="savingCopy"
-            class="mb-2"
-          ></v-text-field>
-          <v-text-field
-            v-model="copyForm.acquisitionPrice"
-            label="Acquisition Price"
-            variant="underlined"
-            type="number"
-            step="0.01"
-            :disabled="savingCopy"
-            class="mb-2"
-          ></v-text-field>
-          <v-textarea
-            v-model="copyForm.notes"
-            label="Notes"
-            variant="underlined"
-            rows="2"
-            :disabled="savingCopy"
-          ></v-textarea>
-        </v-form>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="grey" variant="text" @click="closeCopyDialog" :disabled="savingCopy">Cancel</v-btn>
-        <v-btn color="primary" variant="elevated" @click="saveCopy" :loading="savingCopy">Save</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+   <!-- 添加/编辑副本对话框 -->
+   <v-dialog v-model="copyDialog" max-width="600px">
+     <v-card>
+       <v-card-title class="text-h5">
+         {{ editingCopy ? '编辑副本' : '添加新副本' }}
+       </v-card-title>
+       <v-card-text>
+         <v-form ref="copyFormRef">
+           <v-text-field
+             v-model="copyForm.barcode"
+             label="条形码 *"
+             variant="underlined"
+             :rules="barcodeRules"
+             :disabled="savingCopy"
+             class="mb-2"
+           ></v-text-field>
+           <v-text-field
+             v-model="copyForm.location"
+             label="位置"
+             variant="underlined"
+             :disabled="savingCopy"
+             class="mb-2"
+           ></v-text-field>
+           <v-select
+             v-model="copyForm.status"
+             label="状态 *"
+             variant="underlined"
+             :items="copyStatusOptions"
+             :rules="statusRules"
+             :disabled="savingCopy"
+             class="mb-2"
+           ></v-select>
+           <v-text-field
+             v-model="copyForm.acquisitionDate"
+             label="采购日期"
+             variant="underlined"
+             type="date"
+             :disabled="savingCopy"
+             class="mb-2"
+           ></v-text-field>
+           <v-text-field
+             v-model="copyForm.acquisitionPrice"
+             label="采购价格"
+             variant="underlined"
+             type="number"
+             step="0.01"
+             :disabled="savingCopy"
+             class="mb-2"
+           ></v-text-field>
+           <v-textarea
+             v-model="copyForm.notes"
+             label="备注"
+             variant="underlined"
+             rows="2"
+             :disabled="savingCopy"
+           ></v-textarea>
+         </v-form>
+       </v-card-text>
+       <v-card-actions>
+         <v-spacer></v-spacer>
+         <v-btn color="grey" variant="text" @click="closeCopyDialog" :disabled="savingCopy">取消</v-btn>
+         <v-btn color="primary" variant="elevated" @click="saveCopy" :loading="savingCopy">保存</v-btn>
+       </v-card-actions>
+     </v-card>
+   </v-dialog>
 
-  <!-- 删除副本确认对话框 -->
-  <v-dialog v-model="deleteCopyDialog" max-width="400px">
-    <v-card>
-      <v-card-title class="text-h5">Confirm Delete</v-card-title>
-      <v-card-text>
-        Are you sure you want to delete this copy?
-        <div class="mt-4" v-if="copyToDelete">
-          <div class="font-weight-bold">Barcode: {{ copyToDelete.barcode }}</div>
-          <div class="text-caption">{{ copyToDelete.bookTitle }}</div>
-        </div>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="grey" variant="text" @click="deleteCopyDialog = false" :disabled="deletingCopy">Cancel</v-btn>
-        <v-btn color="error" variant="elevated" @click="deleteCopy" :loading="deletingCopy">Delete</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+   <!-- 删除副本确认对话框 -->
+   <v-dialog v-model="deleteCopyDialog" max-width="400px">
+     <v-card>
+       <v-card-title class="text-h5">确认删除</v-card-title>
+       <v-card-text>
+         确定要删除此副本吗？
+         <div class="mt-4" v-if="copyToDelete">
+           <div class="font-weight-bold">条形码: {{ copyToDelete.barcode }}</div>
+           <div class="text-caption">{{ copyToDelete.bookTitle }}</div>
+         </div>
+       </v-card-text>
+       <v-card-actions>
+         <v-spacer></v-spacer>
+         <v-btn color="grey" variant="text" @click="deleteCopyDialog = false" :disabled="deletingCopy">取消</v-btn>
+         <v-btn color="error" variant="elevated" @click="deleteCopy" :loading="deletingCopy">删除</v-btn>
+       </v-card-actions>
+     </v-card>
+   </v-dialog>
 
-  <!-- 编辑借阅记录对话框 -->
-  <v-dialog v-model="recordDialog" max-width="600px">
-    <v-card>
-      <v-card-title class="text-h5">Edit Borrow Record</v-card-title>
-      <v-card-text v-if="editingRecord">
-        <div class="mb-4">
-          <div class="text-subtitle-2 text-grey-darken-1">User</div>
-          <div class="text-h6">{{ editingRecord.userName }} (@{{ editingRecord.username }})</div>
-        </div>
-        <div class="mb-4">
-          <div class="text-subtitle-2 text-grey-darken-1">Book</div>
-          <div class="text-h6">{{ editingRecord.bookTitle }}</div>
-        </div>
-        <v-divider class="my-4"></v-divider>
-        <v-form ref="recordFormRef">
-          <v-text-field
-            v-model="recordForm.dueDate"
-            label="Due Date"
-            variant="underlined"
-            type="datetime-local"
-            :disabled="savingRecord"
-            class="mb-2"
-          ></v-text-field>
-          <v-text-field
-            v-model="recordForm.returnDate"
-            label="Return Date"
-            variant="underlined"
-            type="datetime-local"
-            :disabled="savingRecord"
-            class="mb-2"
-          ></v-text-field>
-          <v-select
-            v-model="recordForm.status"
-            label="Status"
-            variant="underlined"
-            :items="borrowStatusOptions"
-            :disabled="savingRecord"
-          ></v-select>
-        </v-form>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="grey" variant="text" @click="closeRecordDialog" :disabled="savingRecord">Cancel</v-btn>
-        <v-btn color="primary" variant="elevated" @click="saveRecord" :loading="savingRecord">Save</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+   <!-- 编辑借阅记录对话框 -->
+   <v-dialog v-model="recordDialog" max-width="600px">
+     <v-card>
+       <v-card-title class="text-h5">编辑借阅记录</v-card-title>
+       <v-card-text v-if="editingRecord">
+         <div class="mb-4">
+           <div class="text-subtitle-2 text-grey-darken-1">用户</div>
+           <div class="text-h6">{{ editingRecord.userName }} (@{{ editingRecord.username }})</div>
+         </div>
+         <div class="mb-4">
+           <div class="text-subtitle-2 text-grey-darken-1">书籍</div>
+           <div class="text-h6">{{ editingRecord.bookTitle }}</div>
+         </div>
+         <v-divider class="my-4"></v-divider>
+         <v-form ref="recordFormRef">
+           <v-text-field
+             v-model="recordForm.dueDate"
+             label="归还日期"
+             variant="underlined"
+             type="datetime-local"
+             :disabled="savingRecord"
+             class="mb-2"
+           ></v-text-field>
+           <v-text-field
+             v-model="recordForm.returnDate"
+             label="实际归还日期"
+             variant="underlined"
+             type="datetime-local"
+             :disabled="savingRecord"
+             class="mb-2"
+           ></v-text-field>
+           <v-select
+             v-model="recordForm.status"
+             label="状态"
+             variant="underlined"
+             :items="borrowStatusOptions"
+             :disabled="savingRecord"
+           ></v-select>
+         </v-form>
+       </v-card-text>
+       <v-card-actions>
+         <v-spacer></v-spacer>
+         <v-btn color="grey" variant="text" @click="closeRecordDialog" :disabled="savingRecord">取消</v-btn>
+         <v-btn color="primary" variant="elevated" @click="saveRecord" :loading="savingRecord">保存</v-btn>
+       </v-card-actions>
+     </v-card>
+   </v-dialog>
 
   <!-- 消息提示 -->
   <v-snackbar
@@ -530,7 +530,7 @@
   >
     {{ snackbarText }}
     <template v-slot:actions>
-      <v-btn variant="text" @click="snackbar = false">Close</v-btn>
+      <v-btn variant="text" @click="snackbar = false">关闭</v-btn>
     </template>
   </v-snackbar>
 </template>
@@ -704,67 +704,67 @@ const recordFormRef = ref<FormElement | null>(null)
 
 // 常量和选项
 const statusOptions = [
-  { text: 'All', value: null },
-  { text: 'Checked Out', value: 'Checked_Out' },
-  { text: 'Returned', value: 'Returned' }
+  { text: '全部', value: null },
+  { text: '已借出', value: 'Checked_Out' },
+  { text: '已归还', value: 'Returned' }
 ]
 
 const copyStatusOptions = ['Available', 'Checked_Out', 'Lost', 'Damaged', 'Withdrawn']
 const borrowStatusOptions = ['Checked_Out', 'Returned']
 
 const bookHeaders = [
-  { title: 'ID', key: 'bookId', sortable: false },
-  { title: 'Title', key: 'title', sortable: false },
-  { title: 'Author', key: 'author', sortable: false },
+  { title: '书籍ID', key: 'bookId', sortable: false },
+  { title: '书名', key: 'title', sortable: false },
+  { title: '作者', key: 'author', sortable: false },
   { title: 'ISBN', key: 'isbn', sortable: false },
-  { title: 'Price', key: 'price', sortable: false },
-  { title: 'Availability', key: 'availability', sortable: false },
-  { title: 'Actions', key: 'actions', sortable: false }
+  { title: '价格', key: 'price', sortable: false },
+  { title: '可用状态', key: 'availability', sortable: false },
+  { title: '操作', key: 'actions', sortable: false }
 ]
 
 const copyHeaders = [
-  { title: 'Item ID', key: 'itemId', sortable: false },
-  { title: 'Barcode', key: 'barcode', sortable: false },
-  { title: 'Location', key: 'location', sortable: false },
-  { title: 'Status', key: 'status', sortable: false },
-  { title: 'Acq. Price', key: 'acquisitionPrice', sortable: false },
-  { title: 'Actions', key: 'actions', sortable: false }
+  { title: '副本ID', key: 'itemId', sortable: false },
+  { title: '条形码', key: 'barcode', sortable: false },
+  { title: '位置', key: 'location', sortable: false },
+  { title: '状态', key: 'status', sortable: false },
+  { title: '采购价格', key: 'acquisitionPrice', sortable: false },
+  { title: '操作', key: 'actions', sortable: false }
 ]
 
 const recordHeaders = [
-  { title: 'User', key: 'user', sortable: false },
-  { title: 'Book Info', key: 'bookInfo', sortable: false },
-  { title: 'Borrow Date', key: 'borrowDate', sortable: false },
-  { title: 'Due Date', key: 'dueDate', sortable: false },
-  { title: 'Status', key: 'status', sortable: false },
-  { title: 'Actions', key: 'actions', sortable: false }
+  { title: '用户', key: 'user', sortable: false },
+  { title: '书籍信息', key: 'bookInfo', sortable: false },
+  { title: '借阅日期', key: 'borrowDate', sortable: false },
+  { title: '归还日期', key: 'dueDate', sortable: false },
+  { title: '状态', key: 'status', sortable: false },
+  { title: '操作', key: 'actions', sortable: false }
 ]
 
 const userHeaders = [
-  { title: 'User', key: 'user', sortable: false },
+  { title: '用户', key: 'user', sortable: false },
   { title: 'UUID', key: 'uuid', sortable: false },
-  { title: 'Role', key: 'admin', sortable: false },
-  { title: 'Actions', key: 'actions', sortable: false }
+  { title: '角色', key: 'admin', sortable: false },
+  { title: '操作', key: 'actions', sortable: false }
 ]
 
 // 验证规则
 const titleRules = [
-  (v: string) => !!v || 'Title is required',
-  (v: string) => (v && v.length <= 50) || 'Title must be less than 50 characters'
+  (v: string) => !!v || '书名为必填项',
+  (v: string) => (v && v.length <= 50) || '书名长度不能超过50个字符'
 ]
 
 const authorRules = [
-  (v: string) => !!v || 'Author is required',
-  (v: string) => (v && v.length <= 50) || 'Author must be less than 50 characters'
+  (v: string) => !!v || '作者为必填项',
+  (v: string) => (v && v.length <= 50) || '作者长度不能超过50个字符'
 ]
 
 const barcodeRules = [
-  (v: string) => !!v || 'Barcode is required',
-  (v: string) => (v && v.length <= 30) || 'Barcode must be less than 30 characters'
+  (v: string) => !!v || '条形码为必填项',
+  (v: string) => (v && v.length <= 30) || '条形码长度不能超过30个字符'
 ]
 
 const statusRules = [
-  (v: string) => !!v || 'Status is required'
+  (v: string) => !!v || '状态为必填项'
 ]
 
 // 计算属性
@@ -795,9 +795,9 @@ const loadBooks = async () => {
       books.value = pageData.content
       bookTotalPages.value = pageData.totalPages
     }
-  } catch (error) {
-    const axiosError = error as AxiosError
-    showMessage(axiosError.response?.data?.message || 'Failed to load books', 'error')
+   } catch (error) {
+     const axiosError = error as AxiosError
+     showMessage(axiosError.response?.data?.message || '加载书籍失败', 'error')
   } finally {
     loadingBooks.value = false
   }
@@ -852,10 +852,10 @@ const saveBook = async () => {
     let response
     if (editingBook.value && editingBook.value.bookId) {
       response = await axios.put(`/api/books/${editingBook.value.bookId}`, payload)
-      showMessage('Book updated successfully', 'success')
+      showMessage('图书更新成功', 'success')
     } else {
       response = await axios.post('/api/books', payload)
-      showMessage('Book added successfully', 'success')
+      showMessage('图书添加成功', 'success')
     }
 
     const data = response.data as ApiResponse
@@ -865,7 +865,7 @@ const saveBook = async () => {
     }
   } catch (error) {
     const axiosError = error as AxiosError
-    showMessage(axiosError.response?.data?.message || 'Failed to save book', 'error')
+    showMessage(axiosError.response?.data?.message || '保存图书失败', 'error')
   } finally {
     savingBook.value = false
   }
@@ -886,14 +886,14 @@ const deleteBook = async () => {
     const response = await axios.delete(`/api/books/${bookToDelete.value.bookId}`)
     const data = response.data as ApiResponse
     if (data.success) {
-      showMessage('Book deleted successfully', 'success')
+      showMessage('图书删除成功', 'success')
       deleteBookDialog.value = false
       bookToDelete.value = null
       await loadBooks()
     }
   } catch (error) {
     const axiosError = error as AxiosError
-    showMessage(axiosError.response?.data?.message || 'Failed to delete book', 'error')
+    showMessage(axiosError.response?.data?.message || '图书删除失败', 'error')
   } finally {
     deletingBook.value = false
   }
@@ -920,9 +920,9 @@ const loadBookCopies = async () => {
       bookCopies.value = pageData.content
       copyTotalPages.value = pageData.totalPages
     }
-  } catch (error) {
-    const axiosError = error as AxiosError
-    showMessage(axiosError.response?.data?.message || 'Failed to load copies', 'error')
+   } catch (error) {
+     const axiosError = error as AxiosError
+     showMessage(axiosError.response?.data?.message || '加载副本失败', 'error')
   } finally {
     loadingCopies.value = false
   }
@@ -975,10 +975,10 @@ const saveCopy = async () => {
     let response
     if (editingCopy.value && editingCopy.value.itemId) {
       response = await axios.put(`/api/book-items/${editingCopy.value.itemId}`, payload)
-      showMessage('Copy updated successfully', 'success')
+      showMessage('副本更新成功', 'success')
     } else {
       response = await axios.post('/api/book-items', payload)
-      showMessage('Copy added successfully', 'success')
+      showMessage('副本添加成功', 'success')
     }
 
     const data = response.data as ApiResponse
@@ -989,7 +989,7 @@ const saveCopy = async () => {
     }
   } catch (error) {
     const axiosError = error as AxiosError
-    showMessage(axiosError.response?.data?.message || 'Failed to save copy', 'error')
+    showMessage(axiosError.response?.data?.message || '保存副本失败', 'error')
   } finally {
     savingCopy.value = false
   }
@@ -1008,9 +1008,9 @@ const deleteCopy = async () => {
   deletingCopy.value = true
   try {
     const response = await axios.delete(`/api/book-items/${copyToDelete.value.itemId}`)
-    const data = response.data as ApiResponse
-    if (data.success) {
-      showMessage('Copy deleted successfully', 'success')
+     const data = response.data as ApiResponse
+     if (data.success) {
+       showMessage('副本删除成功', 'success')
       deleteCopyDialog.value = false
       copyToDelete.value = null
       await loadBookCopies()
@@ -1018,7 +1018,7 @@ const deleteCopy = async () => {
     }
   } catch (error) {
     const axiosError = error as AxiosError
-    showMessage(axiosError.response?.data?.message || 'Failed to delete copy', 'error')
+    showMessage(axiosError.response?.data?.message || '副本删除失败', 'error')
   } finally {
     deletingCopy.value = false
   }
@@ -1047,9 +1047,9 @@ const loadAllBorrowRecords = async () => {
       borrowRecords.value = pageData.content
       recordTotalPages.value = pageData.totalPages
     }
-  } catch (error) {
-    const axiosError = error as AxiosError
-    showMessage(axiosError.response?.data?.message || 'Failed to load borrow records', 'error')
+   } catch (error) {
+     const axiosError = error as AxiosError
+     showMessage(axiosError.response?.data?.message || '加载借阅记录失败', 'error')
   } finally {
     loadingRecords.value = false
   }
@@ -1097,13 +1097,13 @@ const saveRecord = async () => {
     const data = response.data as ApiResponse
 
     if (data.success) {
-      showMessage('Record updated successfully', 'success')
+      showMessage('借阅记录更新成功', 'success')
       closeRecordDialog()
       await loadAllBorrowRecords()
     }
-  } catch (error) {
-    const axiosError = error as AxiosError
-    showMessage(axiosError.response?.data?.message || 'Failed to update record', 'error')
+   } catch (error) {
+     const axiosError = error as AxiosError
+     showMessage(axiosError.response?.data?.message || '记录更新失败', 'error')
   } finally {
     savingRecord.value = false
   }
@@ -1130,9 +1130,9 @@ const loadUsers = async () => {
         isCurrentUser: user.uuid === currentUserUuid
       }))
     }
-  } catch (error) {
-    const axiosError = error as AxiosError
-    showMessage(axiosError.response?.data?.message || 'Failed to load users', 'error')
+   } catch (error) {
+     const axiosError = error as AxiosError
+     showMessage(axiosError.response?.data?.message || '加载用户列表失败', 'error')
   } finally {
     loadingUsers.value = false
   }
@@ -1140,15 +1140,16 @@ const loadUsers = async () => {
 
 // 切换管理员状态
 const toggleAdminStatus = async (user: AdminUser) => {
-  if (user.isCurrentUser) {
-    showMessage('You cannot modify your own administrator privileges', 'warning')
-    return
-  }
+   if (user.isCurrentUser) {
+     showMessage('您不能修改自己的管理员权限', 'warning')
+     return
+   }
 
   const newStatus = !user.admin
-  const action = newStatus ? 'grant administrator privileges to' : 'revoke administrator privileges from'
+  const action = newStatus ? '授予' : '撤销'
+  const actionText = newStatus ? '管理员权限' : '管理员权限'
 
-  if (!confirm(`Are you sure you want to ${action} ${user.name} (@${user.username})?`)) {
+  if (!confirm(`确定要${action} ${user.name} (@${user.username}) 的${actionText}吗？`)) {
     return
   }
 
@@ -1162,22 +1163,22 @@ const toggleAdminStatus = async (user: AdminUser) => {
     if (data.success) {
       showMessage(
         newStatus
-          ? 'Administrator privileges granted successfully'
-          : 'Administrator privileges revoked successfully',
+          ? '管理员权限授予成功'
+          : '管理员权限撤销成功',
         'success'
       )
       await loadUsers()
     }
   } catch (error) {
     const axiosError = error as AxiosError
-    showMessage(axiosError.response?.data?.message || 'Failed to update user privileges', 'error')
+    showMessage(axiosError.response?.data?.message || '更新用户权限失败', 'error')
   }
 }
 
-// 打开删除用户对话框
+ // 打开删除用户对话框
 const openDeleteUserDialog = (user: AdminUser) => {
   if (user.isCurrentUser) {
-    showMessage('You cannot delete your own account', 'warning')
+    showMessage('您不能删除自己的账户', 'warning')
     return
   }
   userToDelete.value = user
@@ -1194,14 +1195,14 @@ const deleteUser = async () => {
     const data = response.data as ApiResponse
 
     if (data.success) {
-      showMessage('User deleted successfully', 'success')
+      showMessage('用户删除成功', 'success')
       deleteUserDialog.value = false
       userToDelete.value = null
       await loadUsers()
     }
   } catch (error) {
     const axiosError = error as AxiosError
-    showMessage(axiosError.response?.data?.message || 'Failed to delete user', 'error')
+    showMessage(axiosError.response?.data?.message || '用户删除失败', 'error')
   } finally {
     deletingUser.value = false
   }
@@ -1211,9 +1212,9 @@ const deleteUser = async () => {
 
 // 格式化日期显示
 const formatDate = (dateString: string): string => {
-  if (!dateString) return 'N/A'
+  if (!dateString) return '无'
   const date = new Date(dateString)
-  return date.toLocaleString('en-US', {
+  return date.toLocaleString('zh-CN', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',

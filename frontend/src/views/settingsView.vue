@@ -44,7 +44,7 @@
 
     <v-dialog v-model="usernameDialog" max-width="500px">
       <v-card>
-        <v-card-title class="text-h5">修改端用户名</v-card-title>
+        <v-card-title class="text-h5">修改用户名</v-card-title>
         <v-card-text>
           <v-form ref="usernameFormRef">
             <v-text-field
@@ -194,26 +194,26 @@ const displayNameFormRef = ref<FormElement | null>(null)
 const passwordFormRef = ref<FormElement | null>(null)
 
 const nameRules = [
-  (v: string) => !!v || 'Username cannot be empty',
-  (v: string) => (v && v.length >= 3 && v.length <= 50) || 'Username must be between 3-50 characters'
+  (v: string) => !!v || '用户名不能为空',
+  (v: string) => (v && v.length >= 3 && v.length <= 50) || '用户名长度必须在3-50个字符之间'
 ]
 
 const displayNameRules = [
-  (v: string) => !!v || 'Display name cannot be empty',
-  (v: string) => (v && v.length >= 1 && v.length <= 12) || 'Display name must be between 1-12 characters'
+  (v: string) => !!v || '昵称不能为空',
+  (v: string) => (v && v.length >= 1 && v.length <= 12) || '昵称长度必须在1-12个字符之间'
 ]
 
 const passwordRequiredRules = [
-  (v: string) => !!v || 'Current password cannot be empty'
+  (v: string) => !!v || '当前密码不能为空'
 ]
 
 const passwordRules = [
-  (v: string) => !!v || 'Password cannot be empty',
-  (v: string) => (v && v.length >= 6 && v.length <= 50) || 'Password must be between 6-50 characters'
+  (v: string) => !!v || '新密码不能为空',
+  (v: string) => (v && v.length >= 6 && v.length <= 50) || '密码长度必须在6-50个字符之间'
 ]
 
 const confirmPasswordRules = [
-  (v: string) => v === newPassword.value || 'The passwords entered twice do not match'
+  (v: string) => v === newPassword.value || '两次输入的密码不一致'
 ]
 
 const openUsernameDialog = () => {
@@ -276,21 +276,21 @@ const changeUsername = async () => {
 
     if (response.data.success && response.data.data) {
       user.updateUsername(response.data.data.username)
-      snackbarText.value = 'Username updated successfully'
+      snackbarText.value = '用户名更新成功'
       snackbarColor.value = 'success'
       snackbar.value = true
       setTimeout(() => {
         closeUsernameDialog()
       }, 1000)
     } else {
-      snackbarText.value = response.data.message || 'Update failed'
+      snackbarText.value = response.data.message || '更新失败'
       snackbarColor.value = 'error'
       snackbar.value = true
     }
   } catch (error: unknown) {
     const axiosError = error as AxiosError
     console.error('Change username error:', error)
-    snackbarText.value = axiosError.response?.data?.message || 'Update failed, please try again'
+    snackbarText.value = axiosError.response?.data?.message || '更新失败，请重试'
     snackbarColor.value = 'error'
     snackbar.value = true
   } finally {
@@ -318,21 +318,21 @@ const changeDisplayName = async () => {
 
     if (response.data.success && response.data.data) {
       user.updateName(response.data.data.name)
-      snackbarText.value = 'Display name updated successfully'
+      snackbarText.value = '昵称更新成功'
       snackbarColor.value = 'success'
       snackbar.value = true
       setTimeout(() => {
         closeDisplayNameDialog()
       }, 1000)
     } else {
-      snackbarText.value = response.data.message || 'Update failed'
+      snackbarText.value = response.data.message || '更新失败'
       snackbarColor.value = 'error'
       snackbar.value = true
     }
   } catch (error: unknown) {
     const axiosError = error as AxiosError
     console.error('Change display name error:', error)
-    snackbarText.value = axiosError.response?.data?.message || 'Update failed, please try again'
+    snackbarText.value = axiosError.response?.data?.message || '更新失败，请重试'
     snackbarColor.value = 'error'
     snackbar.value = true
   } finally {
@@ -360,21 +360,21 @@ const changePassword = async () => {
     )
 
     if (response.data.success) {
-      snackbarText.value = 'Password updated successfully'
+      snackbarText.value = '密码更新成功'
       snackbarColor.value = 'success'
       snackbar.value = true
       setTimeout(() => {
         closePasswordDialog()
       }, 1000)
     } else {
-      snackbarText.value = response.data.message || 'Update failed'
+      snackbarText.value = response.data.message || '更新失败'
       snackbarColor.value = 'error'
       snackbar.value = true
     }
   } catch (error: unknown) {
     const axiosError = error as AxiosError
     console.error('Change password error:', error)
-    snackbarText.value = axiosError.response?.data?.message || 'Update failed, please try again'
+    snackbarText.value = axiosError.response?.data?.message || '更新失败，请重试'
     snackbarColor.value = 'error'
     snackbar.value = true
   } finally {
@@ -388,7 +388,7 @@ const handleLogout = async () => {
     await axios.post('/api/auth/logout')
 
     user.logout()
-    snackbarText.value = 'Logged out successfully'
+    snackbarText.value = '退出登录成功'
     snackbarColor.value = 'success'
     snackbar.value = true
 
@@ -397,7 +397,7 @@ const handleLogout = async () => {
     }, 1000)
   } catch (error: unknown) {
     console.error('Logout error:', error)
-    // Even if logout fails on server, clear local state
+    // 即使服务器端登出失败也清除状态
     user.logout()
     router.push('/login')
   } finally {

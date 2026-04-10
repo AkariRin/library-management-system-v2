@@ -244,7 +244,7 @@ public class BookItemService {
     private BookItem.BookItemStatus parseStatus(String status) {
         return switch (status) {
             case "Available" -> BookItem.BookItemStatus.Available;
-            case "Checked Out" -> BookItem.BookItemStatus.Checked_Out;
+            case "Checked Out", "Checked_Out" -> BookItem.BookItemStatus.Checked_Out;
             case "Lost" -> BookItem.BookItemStatus.Lost;
             case "Damaged" -> BookItem.BookItemStatus.Damaged;
             case "Withdrawn" -> BookItem.BookItemStatus.Withdrawn;

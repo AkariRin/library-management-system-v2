@@ -49,18 +49,18 @@ public class DefaultAdminInitializer {
     @EventListener(ApplicationReadyEvent.class)
     @Transactional
     public void initializeDefaultAdmin() {
-        logger.info("Checking for existing admin accounts...");
+        logger.info("正在检查现有的管理员账户...");
 
         // 检查是否存在管理员账户
         boolean hasAdmin = userRepository.existsByAdmin(true);
 
         if (!hasAdmin) {
-            logger.warn("No admin account found in database. Creating default admin account...");
+            logger.warn("数据库中未找到管理员账户。正在创建默认管理员账户...");
 
             // 生成唯一的用户名
             String username = generateUniqueUsername();
             if (username == null) {
-                logger.error("Failed to generate unique username after {} attempts. Aborting admin creation.", MAX_USERNAME_ATTEMPTS);
+                logger.error("尝试{}次后未能生成唯一的用户名。中止管理员创建。", MAX_USERNAME_ATTEMPTS);
                 return;
             }
 
@@ -79,15 +79,15 @@ public class DefaultAdminInitializer {
 
             // 在控制台打印账号密码
             logger.warn("=".repeat(80));
-            logger.warn("DEFAULT ADMIN ACCOUNT CREATED");
+            logger.warn("默认管理员账户已创建");
             logger.warn("=".repeat(80));
-            logger.warn("Username: {}", username);
-            logger.warn("Password: {}", password);
+            logger.warn("用户名: {}", username);
+            logger.warn("密码: {}", password);
             logger.warn("=".repeat(80));
-            logger.warn("PLEASE CHANGE THE DEFAULT PASSWORD IMMEDIATELY AFTER FIRST LOGIN!");
+            logger.warn("请在首次登录后立即更改默认密码！");
             logger.warn("=".repeat(80));
         } else {
-            logger.info("Admin account(s) already exist in database. Skipping default admin creation.");
+            logger.info("数据库中已存在管理员账户。跳过默认管理员创建。");
         }
     }
 

@@ -155,7 +155,7 @@
           </v-col>
           <v-col cols="12" md="4">
             <div class="mb-4">
-              <div class="text-caption text-grey-darken-1">到懂日期</div>
+              <div class="text-caption text-grey-darken-1">到期日期</div>
               <div class="text-body-1" :class="{ 'text-error font-weight-bold': selectedRecord.isOverdue }">
                 {{ formatDate(selectedRecord.dueDate) }}
                 <v-chip v-if="selectedRecord.isOverdue" color="error" size="small" class="ml-1">逾期</v-chip>
@@ -193,7 +193,7 @@
         >
           立即归还
         </v-btn>
-        <v-btn color="grey" variant="text" @click="closeDetailDialog">关闽</v-btn>
+        <v-btn color="grey" variant="text" @click="closeDetailDialog">关闭</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -203,10 +203,10 @@
     <v-card>
       <v-card-title class="text-h5">确认归还</v-card-title>
       <v-card-text>
-        你确定要归还这本书吗?
+        确定要归还这本书吗？
         <div class="mt-4" v-if="recordToReturn">
           <div class="font-weight-bold">{{ recordToReturn.bookTitle }}</div>
-          <div class="text-caption">by {{ recordToReturn.bookAuthor }}</div>
+          <div class="text-caption">作者：{{ recordToReturn.bookAuthor }}</div>
         </div>
       </v-card-text>
       <v-card-actions>
@@ -233,7 +233,7 @@
   >
     {{ snackbarText }}
     <template v-slot:actions>
-      <v-btn variant="text" @click="snackbar = false">关闽</v-btn>
+      <v-btn variant="text" @click="snackbar = false">关闭</v-btn>
     </template>
   </v-snackbar>
 </template>
@@ -298,19 +298,20 @@ const totalPages = ref(0)
 const statusFilter = ref<string | null>(null)
 
 const statusOptions = [
-  { text: 'All', value: null },
-  { text: 'Checked Out', value: 'Checked_Out' },
-  { text: 'Returned', value: 'Returned' }
+  { text: '全部', value: null },
+  { text: '已借出', value: 'Checked_Out' },
+  { text: '已归还', value: 'Returned' },
+  { text: '逾期', value: 'Overdue' }
 ]
 
 const headers = [
-  { title: 'Book Info', key: 'bookInfo', sortable: false },
-  { title: 'Barcode', key: 'barcode', sortable: false },
-  { title: 'Borrow Date', key: 'borrowDate', sortable: false },
-  { title: 'Due Date', key: 'dueDate', sortable: false },
-  { title: 'Return Date', key: 'returnDate', sortable: false },
-  { title: 'Status', key: 'status', sortable: false },
-  { title: 'Actions', key: 'actions', sortable: false }
+  { title: '书籍信息', key: 'bookInfo', sortable: false },
+  { title: '条形码', key: 'barcode', sortable: false },
+  { title: '借阅日期', key: 'borrowDate', sortable: false },
+  { title: '到期日期', key: 'dueDate', sortable: false },
+  { title: '归还日期', key: 'returnDate', sortable: false },
+  { title: '状态', key: 'status', sortable: false },
+  { title: '操作', key: 'actions', sortable: false }
 ]
 
 // 计算属性
@@ -343,12 +344,12 @@ const loadBorrowRecords = async () => {
       totalElements.value = response.data.data.totalElements
       totalPages.value = response.data.data.totalPages
     } else {
-      showMessage(response.data.message || 'Failed to load borrow records', 'error')
+      showMessage(response.data.message || '加载借阅记录失败', 'error')
     }
   } catch (error) {
     console.error('Load borrow records error:', error)
     const axiosError = error as AxiosError
-    showMessage(axiosError.response?.data?.message || 'Failed to load borrow records', 'error')
+    showMessage(axiosError.response?.data?.message || '加载借阅记录失败', 'error')
   } finally {
     loading.value = false
   }
@@ -403,7 +404,7 @@ const confirmReturn = async () => {
     )
 
     if (response.data.success) {
-      showMessage('Book returned successfully!', 'success')
+      showMessage('图书归还成功！', 'success')
       returnDialog.value = false
       recordToReturn.value = null
 
@@ -416,12 +417,12 @@ const confirmReturn = async () => {
       // 重新加载借阅记录
       await loadBorrowRecords()
     } else {
-      showMessage(response.data.message || 'Failed to return book', 'error')
+      showMessage(response.data.message || '图书归还失败', 'error')
     }
   } catch (error) {
     console.error('Return book error:', error)
     const axiosError = error as AxiosError
-    showMessage(axiosError.response?.data?.message || 'Failed to return book', 'error')
+    showMessage(axiosError.response?.data?.message || '图书归还失败', 'error')
   } finally {
     returningRecordId.value = null
   }
@@ -429,9 +430,9 @@ const confirmReturn = async () => {
 
 // 格式化日期
 const formatDate = (dateString: string): string => {
-  if (!dateString) return 'N/A'
+  if (!dateString) return '无'
   const date = new Date(dateString)
-  return date.toLocaleString('en-US', {
+  return date.toLocaleString('zh-CN', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -444,7 +445,8 @@ const formatDate = (dateString: string): string => {
 const getStatusColor = (status: string): string => {
   const colorMap: Record<string, string> = {
     'Checked_Out': 'warning',
-    'Returned': 'success'
+    'Returned': 'success',
+    'Overdue': 'error'
   }
   return colorMap[status] || 'grey'
 }

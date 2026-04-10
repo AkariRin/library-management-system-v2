@@ -38,7 +38,7 @@
             <v-col cols="12" md="6">
               <v-text-field
                 v-model="searchFilters.category"
-                label="类別ID"
+                label="类别ID"
                 variant="underlined"
                 prepend-inner-icon="mdi-tag"
                 type="number"
@@ -115,7 +115,7 @@
     <v-card>
       <v-card-title class="text-h5 bg-primary">
         <v-icon icon="mdi-book-open-page-variant" class="mr-2"></v-icon>
-        书籍触详情
+        书籍详情
       </v-card-title>
       <v-card-text class="pa-6" v-if="selectedBook">
         <v-row>
@@ -128,7 +128,7 @@
           <v-col cols="12" md="6">
             <div class="mb-4">
               <div class="text-caption text-grey-darken-1">ISBN</div>
-              <div class="text-h6">{{ selectedBook.isbn || 'N/A' }}</div>
+              <div class="text-h6">{{ selectedBook.isbn || '未提供' }}</div>
             </div>
           </v-col>
           <v-col cols="12">
@@ -146,19 +146,19 @@
           <v-col cols="12" md="6">
             <div class="mb-4">
               <div class="text-caption text-grey-darken-1">出版社</div>
-              <div class="text-h6">{{ selectedBook.publisher || 'N/A' }}</div>
+              <div class="text-h6">{{ selectedBook.publisher || '未提供' }}</div>
             </div>
           </v-col>
           <v-col cols="12" md="6">
             <div class="mb-4">
               <div class="text-caption text-grey-darken-1">出版日期</div>
-              <div class="text-h6">{{ selectedBook.publishDate || 'N/A' }}</div>
+              <div class="text-h6">{{ selectedBook.publishDate || '未提供' }}</div>
             </div>
           </v-col>
           <v-col cols="12" md="6">
             <div class="mb-4">
-              <div class="text-caption text-grey-darken-1">类別</div>
-              <div class="text-h6">{{ selectedBook.category || 'N/A' }}</div>
+              <div class="text-caption text-grey-darken-1">类别</div>
+              <div class="text-h6">{{ selectedBook.category || '未提供' }}</div>
             </div>
           </v-col>
           <v-col cols="12" md="6">
@@ -235,7 +235,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-      <v-btn color="grey" variant="text" @click="closeDetailDialog">关闽</v-btn>
+      <v-btn color="grey" variant="text" @click="closeDetailDialog">关闭</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -249,7 +249,7 @@
   >
     {{ snackbarText }}
     <template v-slot:actions>
-      <v-btn variant="text" @click="snackbar = false">关闽</v-btn>
+      <v-btn variant="text" @click="snackbar = false">关闭</v-btn>
     </template>
   </v-snackbar>
 </template>
